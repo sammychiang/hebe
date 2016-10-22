@@ -158,7 +158,8 @@ var gapInterval = setInterval(function () {
                                 " 会被追回");
                         }
                         var halfHourAdvance = 0.5 * lagEachHour + gap;
-                        console.info("---每小时领先" + lagEachHour +
+                        console.info(new Date() + "---每小时领先" +
+                            lagEachHour +
                             "---半小时后领先" + halfHourAdvance +
                             "---1小时后领先" + (lagEachHour + gap) +
                             "---3小时后领先" + (3 * lagEachHour +
