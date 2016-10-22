@@ -4,6 +4,7 @@ const console = require('better-console');
 var send = 0;
 var success = 0;
 var balanceInterval;
+var ramdomDelay = Math.floor((Math.random() * 60) + 1);
 
 function balance(switcher) {
     console.log(switcher, !balanceInterval);
@@ -104,80 +105,101 @@ function beep(times) {
         console.log("\007");
 }
 
-console.log("started");
-var gapInterval = setInterval(function () {
-        request.post(
-            "https://api.m.sm.cn/rest?method=sc.yisou&q=%E5%A3%B0%E9%9F%B3%E7%9A%84%E6%88%98%E4%BA%89&ext=yisouvideolg_1732573&act=getmax&max_type=yisou_variety&max_sc_name=yisou_sc%3Ainter_op_max&max_sc_param=inter_op_max_subtype%3Dmulti_vote",
-            function (error, response, data) {
-                var votes = JSON.parse(data).multi_vote[0].data;
-                var linjunjie = votes.find(function (item) {
-                    return item.link == "林俊杰";
-                });
-                var hebe = votes.find(function (item) {
-                    return item.link == "田馥甄";
-                });
-                checkTimes++;
-                loop = checkTimes % statTimes;
-                var gap = hebe.vote_count - linjunjie.vote_count;
-                if (loop == 1) {
-                    stat.advance.start = gap;
-                    stat.hebe.start = hebe.vote_count;
-                    stat.linjunjie.start = linjunjie.vote_count;
-                }
-                if (loop == 0) {
-                    stat.advance.end = gap;
-                    stat.hebe.end = hebe.vote_count;
-                    stat.linjunjie.end = linjunjie.vote_count;
-                    var advance = stat.advance.end - stat.advance.start;
-                    var lagEachHour = Math.floor(
-                        60 * 60 / stat.interval *
-                        advance);
-                    var remainTime = Math.floor(Math.abs(gap) /
-                        Math.abs(advance) *
-                        stat.interval);
-                    if (gap < 0) {
-                        if (advance <= 0) {
-                            console.error("!!!不可能追回!!!" +
-                                "---每小时落后" + lagEachHour +
-                                "---1小时后落后" + (lagEachHour + gap) +
-                                "---3小时后落后" + (3 * lagEachHour +
-                                    gap) +
-                                "---5小时后落后" + (5 * lagEachHour +
-                                    gap) +
-                                "---8小时后落后" + (8 * lagEachHour +
-                                    gap));
-                        } else {
-                            console.info(secondstotime(remainTime) +
-                                " 可追回");
-                        }
-                    } else {
-                        if (advance >= 0) {
-                            console.info("领先扩大")
-                        } else {
-                            console.info(secondstotime(remainTime) +
-                                " 会被追回");
-                        }
-                        var halfHourAdvance = 0.5 * lagEachHour + gap;
-                        console.info(new Date() + "---每小时领先" +
-                            lagEachHour +
-                            "---半小时后领先" + halfHourAdvance +
-                            "---1小时后领先" + (lagEachHour + gap) +
-                            "---3小时后领先" + (3 * lagEachHour +
-                                gap) +
-                            "---5小时后领先" + (5 * lagEachHour +
-                                gap) +
-                            "---8小时后领先" + (8 * lagEachHour +
-                                gap));
-                        if (halfHourAdvance < 100000) {
-                            balance(1);
-                        } else if (halfHourAdvance > 500000) {
-                            balance(0)
-                        }
+console.log(new Date() + "started");
+console.log("delay for " + ramdomDelay + " seconds");
+setTimeout(function () {
+    var gapInterval = setInterval(function () {
+            request.post(
+                "https://api.m.sm.cn/rest?method=sc.yisou&q=%E5%A3%B0%E9%9F%B3%E7%9A%84%E6%88%98%E4%BA%89&ext=yisouvideolg_1732573&act=getmax&max_type=yisou_variety&max_sc_name=yisou_sc%3Ainter_op_max&max_sc_param=inter_op_max_subtype%3Dmulti_vote",
+                function (error, response, data) {
+                    var votes = JSON.parse(data).multi_vote[0].data;
+                    var linjunjie = votes.find(function (item) {
+                        return item.link == "林俊杰";
+                    });
+                    var hebe = votes.find(function (item) {
+                        return item.link == "田馥甄";
+                    });
+                    checkTimes++;
+                    loop = checkTimes % statTimes;
+                    var gap = hebe.vote_count - linjunjie.vote_count;
+                    if (loop == 1) {
+                        stat.advance.start = gap;
+                        stat.hebe.start = hebe.vote_count;
+                        stat.linjunjie.start = linjunjie.vote_count;
                     }
+                    if (loop == 0) {
+                        stat.advance.end = gap;
+                        stat.hebe.end = hebe.vote_count;
+                        stat.linjunjie.end = linjunjie.vote_count;
+                        var advance = stat.advance.end - stat.advance
+                            .start;
+                        var lagEachHour = Math.floor(
+                            60 * 60 / stat.interval *
+                            advance);
+                        var remainTime = Math.floor(Math.abs(
+                                gap) /
+                            Math.abs(advance) *
+                            stat.interval);
+                        if (gap < 0) {
+                            if (advance <= 0) {
+                                console.error("!!!不可能追回!!!" +
+                                    "---每小时落后" +
+                                    lagEachHour +
+                                    "---1小时后落后" + (
+                                        lagEachHour + gap) +
+                                    "---3小时后落后" + (3 *
+                                        lagEachHour +
+                                        gap) +
+                                    "---5小时后落后" + (5 *
+                                        lagEachHour +
+                                        gap) +
+                                    "---8小时后落后" + (8 *
+                                        lagEachHour +
+                                        gap));
+                            } else {
+                                console.info(secondstotime(
+                                        remainTime) +
+                                    " 可追回");
+                            }
+                        } else {
+                            if (advance >= 0) {
+                                console.info("领先扩大")
+                            } else {
+                                console.info(secondstotime(
+                                        remainTime) +
+                                    " 会被追回");
+                            }
+                            var halfHourAdvance = 0.5 *
+                                lagEachHour + gap;
+                            console.info(new Date() +
+                                "---每小时领先" +
+                                lagEachHour +
+                                "---半小时后领先" +
+                                halfHourAdvance +
+                                "---1小时后领先" + (lagEachHour +
+                                    gap) +
+                                "---3小时后领先" + (3 *
+                                    lagEachHour +
+                                    gap) +
+                                "---5小时后领先" + (5 *
+                                    lagEachHour +
+                                    gap) +
+                                "---8小时后领先" + (8 *
+                                    lagEachHour +
+                                    gap));
+                            if (halfHourAdvance < 100000) {
+                                balance(1);
+                            } else if (halfHourAdvance >
+                                700000) {
+                                balance(0)
+                            }
+                        }
 
-                    stat.advance.start = gap;
-                }
-                lastgap = gap;
-            })
-    },
-    interval * 1000)
+                        stat.advance.start = gap;
+                    }
+                    lastgap = gap;
+                })
+        },
+        interval * 1000);
+
+}, ramdomDelay * 1000);
