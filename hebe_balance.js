@@ -5,6 +5,15 @@ var send = 0;
 var success = 0;
 var balanceInterval;
 var ramdomDelay = Math.floor((Math.random() * 60) + 1);
+var limit = {
+    value: Math.floor((Math.random() * 100 * 10000) + 5 * 10000),
+    interval: 15 * 60 * 1000
+}
+
+setInterval(function () {
+    limit.value = Math.floor((Math.random() * 100 * 10000) + 20 * 10000);
+    console.log(limit.value);
+}, limit.interval);
 
 function balance(switcher) {
     console.log(switcher, !balanceInterval);
@@ -34,7 +43,7 @@ function balance(switcher) {
 
 
 
-var statTimes = 12;
+var statTimes = 2;
 var gap = 0;
 var lastgap = 0;
 var interval = 5;
@@ -171,6 +180,8 @@ setTimeout(function () {
                             }
                             var halfHourAdvance = 0.5 *
                                 lagEachHour + gap;
+                            var tenMsAdvance = 0.2 *
+                                lagEachHour + gap;
                             console.info(new Date() +
                                 "---每小时领先" +
                                 lagEachHour +
@@ -187,10 +198,11 @@ setTimeout(function () {
                                 "---8小时后领先" + (8 *
                                     lagEachHour +
                                     gap));
-                            if (halfHourAdvance < 0) {
+                            if (tenMsAdvance < 0 || gap <
+                                100000) {
                                 balance(1);
-                            } else if (halfHourAdvance >
-                                300000) {
+                            } else if (gap >
+                                limit.value) {
                                 balance(0)
                             }
                         }
