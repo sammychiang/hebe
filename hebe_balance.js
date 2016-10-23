@@ -151,20 +151,7 @@ setTimeout(function () {
                             stat.interval);
                         if (gap < 0) {
                             if (advance <= 0) {
-                                console.error("!!!不可能追回!!!" +
-                                    "---每小时落后" +
-                                    lagEachHour +
-                                    "---1小时后落后" + (
-                                        lagEachHour + gap) +
-                                    "---3小时后落后" + (3 *
-                                        lagEachHour +
-                                        gap) +
-                                    "---5小时后落后" + (5 *
-                                        lagEachHour +
-                                        gap) +
-                                    "---8小时后落后" + (8 *
-                                        lagEachHour +
-                                        gap));
+                                console.error("!!!不可能追回!!!");
                             } else {
                                 console.info(secondstotime(
                                         remainTime) +
@@ -178,33 +165,33 @@ setTimeout(function () {
                                         remainTime) +
                                     " 会被追回");
                             }
-                            var halfHourAdvance = 0.5 *
-                                lagEachHour + gap;
-                            var tenMsAdvance = 0.2 *
-                                lagEachHour + gap;
-                            console.info(new Date() +
-                                "---每小时领先" +
+                        }
+                        var halfHourAdvance = 0.5 *
+                            lagEachHour + gap;
+                        var tenMsAdvance = 0.2 *
+                            lagEachHour + gap;
+                        console.info(new Date() +
+                            "---每小时领先" +
+                            lagEachHour +
+                            "---半小时后领先" +
+                            halfHourAdvance +
+                            "---1小时后领先" + (lagEachHour +
+                                gap) +
+                            "---3小时后领先" + (3 *
                                 lagEachHour +
-                                "---半小时后领先" +
-                                halfHourAdvance +
-                                "---1小时后领先" + (lagEachHour +
-                                    gap) +
-                                "---3小时后领先" + (3 *
-                                    lagEachHour +
-                                    gap) +
-                                "---5小时后领先" + (5 *
-                                    lagEachHour +
-                                    gap) +
-                                "---8小时后领先" + (8 *
-                                    lagEachHour +
-                                    gap));
-                            if (tenMsAdvance < 0 || gap <
-                                100000) {
-                                balance(1);
-                            } else if (gap >
-                                limit.value) {
-                                balance(0)
-                            }
+                                gap) +
+                            "---5小时后领先" + (5 *
+                                lagEachHour +
+                                gap) +
+                            "---8小时后领先" + (8 *
+                                lagEachHour +
+                                gap));
+                        if (tenMsAdvance < 0 || gap <
+                            100000) {
+                            balance(1);
+                        } else if (gap >
+                            limit.value) {
+                            balance(0)
                         }
 
                         stat.advance.start = gap;
