@@ -43,7 +43,7 @@ function balance(switcher) {
 
 
 
-var statTimes = 2;
+var statTimes = 24;
 var gap = 0;
 var lastgap = 0;
 var interval = 5;
@@ -187,7 +187,7 @@ setTimeout(function () {
                                 lagEachHour +
                                 gap));
                         if (tenMsAdvance < 0 || gap <
-                            100000) {
+                            limit.value) {
                             balance(1);
                         } else if (gap >
                             limit.value) {
