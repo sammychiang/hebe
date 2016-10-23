@@ -6,7 +6,7 @@ var success = 0;
 var balanceInterval;
 var ramdomDelay = Math.floor((Math.random() * 60) + 1);
 var limit = {
-    value: Math.floor((Math.random() * 100 * 10000) + 5 * 10000),
+    value: Math.floor(Math.random() * 100 * 10000),
     interval: 15 * 60 * 1000
 }
 
