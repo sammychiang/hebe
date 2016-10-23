@@ -187,10 +187,10 @@ setTimeout(function () {
                                 "---8小时后领先" + (8 *
                                     lagEachHour +
                                     gap));
-                            if (halfHourAdvance < 100000) {
+                            if (halfHourAdvance < 0) {
                                 balance(1);
                             } else if (halfHourAdvance >
-                                700000) {
+                                300000) {
                                 balance(0)
                             }
                         }
